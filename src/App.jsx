@@ -125,6 +125,15 @@ function TaskItem({ task, onToggle, onEdit, onDelete }) {
             onChange={(e) => setEditTitle(e.target.value)}
           />
           <button type="submit">保存</button>
+          <button
+            type="button"
+            onClick={() => {
+              setIsEditing(false);
+              setEditTitle(task.title);
+            }}
+          >
+            キャンセル
+          </button>
         </form>
       ) : (
         <>
