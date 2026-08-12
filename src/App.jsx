@@ -29,8 +29,12 @@ function TaskList({ tasks }) {
   return (
     <ul>
       {tasks.map((task) => (
-        <li key={task.id}>{task.title}</li>
+        <TaskItem key={task.id} task={task} />
       ))}
     </ul>
   );
+}
+
+function TaskItem({ task }) {
+  return <li>{task.completed ? <del>{task.title}</del> : task.title}</li>;
 }
