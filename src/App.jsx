@@ -19,6 +19,10 @@ export default function App() {
     },
   ]);
 
+  function handleAdd(title) {
+    setTasks([...tasks, { id: crypto.randomUUID(), title, completed: false }]);
+  }
+
   function handleToggle(id) {
     setTasks(
       tasks.map((task) =>
@@ -34,8 +38,33 @@ export default function App() {
   return (
     <>
       <h1>やること</h1>
+      <TaskForm onAdd={handleAdd} />
       <TaskList tasks={tasks} onToggle={handleToggle} onDelete={handleDelete} />
     </>
+  );
+}
+
+function TaskForm({ onAdd }) {
+  const [title, setTitle] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const trimmedTitle = title.trim();
+    if (trimmedTitle === "") return;
+    onAdd(trimmedTitle);
+    setTitle("");
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={title}
+        placeholder="やることを入力"
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <button type="submit">追加</button>
+    </form>
   );
 }
 
