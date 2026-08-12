@@ -19,6 +19,9 @@ export default function App() {
     },
   ]);
 
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter((task) => task.completed).length;
+
   function handleAdd(title) {
     setTasks([...tasks, { id: crypto.randomUUID(), title, completed: false }]);
   }
@@ -47,6 +50,9 @@ export default function App() {
     <>
       <h1>やること</h1>
       <TaskForm onAdd={handleAdd} />
+      <p>
+        全 {totalTasks} 件中 {completedTasks} 件完了
+      </p>
       <TaskList
         tasks={tasks}
         onToggle={handleToggle}
