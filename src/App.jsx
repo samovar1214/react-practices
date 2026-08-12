@@ -1,23 +1,7 @@
 import { useState } from "react";
 
 export default function App() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "React のレンダリングを理解する",
-      completed: true,
-    },
-    {
-      id: 2,
-      title: "より実践的な state の管理",
-      completed: false,
-    },
-    {
-      id: 3,
-      title: "エフェクトとカスタム Hook",
-      completed: false,
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.completed).length;
