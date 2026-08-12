@@ -50,15 +50,21 @@ export default function App() {
     <>
       <h1>やること</h1>
       <TaskForm onAdd={handleAdd} />
-      <p>
-        全 {totalTasks} 件中 {completedTasks} 件完了
-      </p>
-      <TaskList
-        tasks={tasks}
-        onToggle={handleToggle}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      {totalTasks === 0 ? (
+        <p>やることはまだありません</p>
+      ) : (
+        <>
+          <p>
+            全 {totalTasks} 件中 {completedTasks} 件完了
+          </p>
+          <TaskList
+            tasks={tasks}
+            onToggle={handleToggle}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        </>
+      )}
     </>
   );
 }
