@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./App.css";
 
 export default function App() {
   const [tasks, setTasks] = useState([]);
@@ -31,25 +32,34 @@ export default function App() {
   }
 
   return (
-    <>
-      <h1>やること</h1>
-      <TaskForm onAdd={handleAdd} />
-      {totalTasks === 0 ? (
-        <p>やることはまだありません</p>
-      ) : (
-        <>
-          <p>
-            全 {totalTasks} 件中 {completedTasks} 件完了
-          </p>
-          <TaskList
-            tasks={tasks}
-            onToggle={handleToggle}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        </>
-      )}
-    </>
+    <div className="app">
+      <header className="app-header">
+        <h1>やること</h1>
+      </header>
+
+      <main className="main-content">
+        <section className="task-panel">
+          <TaskForm onAdd={handleAdd} />
+
+          {totalTasks === 0 ? (
+            <p className="empty-message">やることはまだありません</p>
+          ) : (
+            <>
+              <p className="task-count">
+                全 {totalTasks} 件中 {completedTasks} 件完了
+              </p>
+
+              <TaskList
+                tasks={tasks}
+                onToggle={handleToggle}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            </>
+          )}
+        </section>
+      </main>
+    </div>
   );
 }
 
@@ -59,27 +69,33 @@ function TaskForm({ onAdd }) {
   function handleSubmit(e) {
     e.preventDefault();
     const trimmedTitle = title.trim();
+
     if (trimmedTitle === "") return;
+
     onAdd(trimmedTitle);
     setTitle("");
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="task-form" onSubmit={handleSubmit}>
       <input
+        className="task-input"
         type="text"
         value={title}
         placeholder="やることを入力"
         onChange={(e) => setTitle(e.target.value)}
       />
-      <button type="submit">追加</button>
+
+      <button className="button add-button" type="submit">
+        追加
+      </button>
     </form>
   );
 }
 
 function TaskList({ tasks, onToggle, onEdit, onDelete }) {
   return (
-    <ul>
+    <ul className="task-list">
       {tasks.map((task) => (
         <TaskItem
           key={task.id}
@@ -100,46 +116,72 @@ function TaskItem({ task, onToggle, onEdit, onDelete }) {
   function handleSave(e) {
     e.preventDefault();
     const trimmedTitle = editTitle.trim();
+
     if (trimmedTitle === "") return;
+
     onEdit(task.id, trimmedTitle);
     setEditTitle(trimmedTitle);
     setIsEditing(false);
   }
 
   return (
-    <li>
+    <li className={`task-item ${task.completed ? "completed" : ""}`}>
       <input
+        className="task-checkbox"
         type="checkbox"
         checked={task.completed}
         onChange={() => onToggle(task.id)}
       />
+
       {isEditing ? (
-        <form onSubmit={handleSave}>
+        <form className="edit-form" onSubmit={handleSave}>
           <input
+            className="edit-input"
             type="text"
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
           />
-          <button type="submit">保存</button>
-          <button
-            type="button"
-            onClick={() => {
-              setIsEditing(false);
-              setEditTitle(task.title);
-            }}
-          >
-            キャンセル
-          </button>
+
+          <div className="button-group">
+            <button className="button save-button" type="submit">
+              保存
+            </button>
+
+            <button
+              className="button cancel-button"
+              type="button"
+              onClick={() => {
+                setIsEditing(false);
+                setEditTitle(task.title);
+              }}
+            >
+              キャンセル
+            </button>
+          </div>
         </form>
       ) : (
         <>
-          {task.completed ? <del>{task.title}</del> : task.title}
-          <button type="button" onClick={() => setIsEditing(true)}>
-            編集
-          </button>
-          <button type="button" onClick={() => onDelete(task.id)}>
-            削除
-          </button>
+          <span className="task-title">
+            {task.completed ? <del>{task.title}</del> : task.title}
+          </span>
+
+          <div className="button-group">
+            <button
+              className="button edit-button"
+              type="button"
+              onClick={() => setIsEditing(true)}
+            >
+              編集
+            </button>
+
+            <button
+              className="button delete-button"
+              type="button"
+              onClick={() => onDelete(task.id)}
+            >
+              削除
+            </button>
+          </div>
         </>
       )}
     </li>
