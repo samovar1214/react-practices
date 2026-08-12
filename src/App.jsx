@@ -1,5 +1,7 @@
+import { useState } from "react";
+
 export default function App() {
-  const tasks = [
+  const [tasks, setTasks] = useState([
     {
       id: 1,
       title: "React のレンダリングを理解する",
@@ -15,26 +17,43 @@ export default function App() {
       title: "エフェクトとカスタム Hook",
       completed: false,
     },
-  ];
+  ]);
+
+  function handleToggle(id) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task,
+      ),
+    );
+  }
 
   return (
     <>
       <h1>やること</h1>
-      <TaskList tasks={tasks} />
+      <TaskList tasks={tasks} onToggle={handleToggle} />
     </>
   );
 }
 
-function TaskList({ tasks }) {
+function TaskList({ tasks, onToggle }) {
   return (
     <ul>
       {tasks.map((task) => (
-        <TaskItem key={task.id} task={task} />
+        <TaskItem key={task.id} task={task} onToggle={onToggle} />
       ))}
     </ul>
   );
 }
 
-function TaskItem({ task }) {
-  return <li>{task.completed ? <del>{task.title}</del> : task.title}</li>;
+function TaskItem({ task, onToggle }) {
+  return (
+    <li>
+      <input
+        type="checkbox"
+        checked={task.completed}
+        onChange={() => onToggle(task.id)}
+      />
+      {task.completed ? <del>{task.title}</del> : task.title}
+    </li>
+  );
 }
