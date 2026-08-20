@@ -11,19 +11,9 @@ export default function App() {
     setTasks([...tasks, { id: crypto.randomUUID(), title, completed: false }]);
   }
 
-  function handleEdit(id, newTitle) {
+  function handleUpdate(updatedTask) {
     setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, title: newTitle } : task,
-      ),
-    );
-  }
-
-  function handleToggle(id) {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task,
-      ),
+      tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)),
     );
   }
 
@@ -51,8 +41,7 @@ export default function App() {
 
               <TaskList
                 tasks={tasks}
-                onToggle={handleToggle}
-                onEdit={handleEdit}
+                onUpdate={handleUpdate}
                 onDelete={handleDelete}
               />
             </>
@@ -93,15 +82,14 @@ function TaskForm({ onAdd }) {
   );
 }
 
-function TaskList({ tasks, onToggle, onEdit, onDelete }) {
+function TaskList({ tasks, onUpdate, onDelete }) {
   return (
     <ul className="task-list">
       {tasks.map((task) => (
         <TaskItem
           key={task.id}
           task={task}
-          onToggle={onToggle}
-          onEdit={onEdit}
+          onUpdate={onUpdate}
           onDelete={onDelete}
         />
       ))}
@@ -109,7 +97,7 @@ function TaskList({ tasks, onToggle, onEdit, onDelete }) {
   );
 }
 
-function TaskItem({ task, onToggle, onEdit, onDelete }) {
+function TaskItem({ task, onUpdate, onDelete }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
 
@@ -119,7 +107,7 @@ function TaskItem({ task, onToggle, onEdit, onDelete }) {
 
     if (trimmedTitle === "") return;
 
-    onEdit(task.id, trimmedTitle);
+    onUpdate({ ...task, title: trimmedTitle });
     setEditTitle(trimmedTitle);
     setIsEditing(false);
   }
@@ -130,7 +118,7 @@ function TaskItem({ task, onToggle, onEdit, onDelete }) {
         className="task-checkbox"
         type="checkbox"
         checked={task.completed}
-        onChange={() => onToggle(task.id)}
+        onChange={() => onUpdate({ ...task, completed: !task.completed })}
       />
 
       {isEditing ? (
