@@ -3,29 +3,45 @@ import TaskForm from "./TaskForm.jsx";
 import TaskList from "./TaskList.jsx";
 import "./App.css";
 
-function tasksReducer(tasks, action) {
+function tasksReducer(state, action) {
   switch (action.type) {
     case "add":
-      return [
-        ...tasks,
-        { id: crypto.randomUUID(), title: action.title, completed: false },
-      ];
+      return {
+        history: [...state.history, state.tasks],
+        tasks: [
+          ...state.tasks,
+          { id: crypto.randomUUID(), title: action.title, completed: false },
+        ],
+      };
     case "update":
-      return tasks.map((task) =>
-        task.id === action.updatedTask.id ? action.updatedTask : task,
-      );
+      return {
+        history: [...state.history, state.tasks],
+        tasks: state.tasks.map((task) =>
+          task.id === action.updatedTask.id ? action.updatedTask : task,
+        ),
+      };
     case "delete":
-      return tasks.filter((task) => task.id !== action.id);
+      return {
+        history: [...state.history, state.tasks],
+        tasks: state.tasks.filter((task) => task.id !== action.id),
+      };
+    case "undo":
+      if (state.history.length === 0) return state;
+      return {
+        history: state.history.slice(0, -1),
+        tasks: state.history[state.history.length - 1],
+      };
     default:
-      return tasks;
+      return state;
   }
 }
 
 export default function App() {
-  const [tasks, dispatch] = useReducer(tasksReducer, []);
+  const initialState = { tasks: [], history: [] };
+  const [state, dispatch] = useReducer(tasksReducer, initialState);
 
-  const totalTasks = tasks.length;
-  const completedTasks = tasks.filter((task) => task.completed).length;
+  const totalTasks = state.tasks.length;
+  const completedTasks = state.tasks.filter((task) => task.completed).length;
 
   function handleAdd(title) {
     dispatch({ type: "add", title });
@@ -58,7 +74,7 @@ export default function App() {
               </p>
 
               <TaskList
-                tasks={tasks}
+                tasks={state.tasks}
                 onUpdate={handleUpdate}
                 onDelete={handleDelete}
               />
