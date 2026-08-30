@@ -1,26 +1,42 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import TaskForm from "./TaskForm.jsx";
 import TaskList from "./TaskList.jsx";
 import "./App.css";
 
+function tasksReducer(tasks, action) {
+  switch (action.type) {
+    case "add":
+      return [
+        ...tasks,
+        { id: crypto.randomUUID(), title: action.title, completed: false },
+      ];
+    case "update":
+      return tasks.map((task) =>
+        task.id === action.updatedTask.id ? action.updatedTask : task,
+      );
+    case "delete":
+      return tasks.filter((task) => task.id !== action.id);
+    default:
+      return tasks;
+  }
+}
+
 export default function App() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, dispatch] = useReducer(tasksReducer, []);
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.completed).length;
 
   function handleAdd(title) {
-    setTasks([...tasks, { id: crypto.randomUUID(), title, completed: false }]);
+    dispatch({ type: "add", title });
   }
 
   function handleUpdate(updatedTask) {
-    setTasks(
-      tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)),
-    );
+    dispatch({ type: "update", updatedTask });
   }
 
   function handleDelete(id) {
-    setTasks(tasks.filter((task) => task.id !== id));
+    dispatch({ type: "delete", id });
   }
 
   return (
