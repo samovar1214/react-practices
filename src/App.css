@@ -255,3 +255,73 @@
     justify-content: flex-end;
   }
 }
+
+.app.dark {
+  background-color: #1f2933;
+  color: #f6fdf6;
+}
+
+.task-panel.dark {
+  background-color: #2f3b45;
+  color: #f6fdf6;
+}
+
+.task-panel.dark .cancel-button {
+  color: #f6fdf6;
+  background-color: #59636b;
+}
+
+.task-panel.dark .task-count {
+  color: #c7d0d6;
+}
+
+.task-panel.dark .empty-message {
+  color: #d8e0e5;
+  background-color: #3d4852;
+}
+
+.task-form.dark .task-input {
+  color: #f6fdf6;
+  background-color: #3d4852;
+  border-color: #66727c;
+}
+
+.task-form.dark .task-input::placeholder {
+  color: #b7c0c7;
+}
+
+.task-form.dark .add-button {
+  color: #f6fdf6;
+  background-color: #4d6970;
+}
+
+.task-item.dark {
+  color: #f6fdf6;
+  background-color: #3d4852;
+  border-color: #56636d;
+}
+
+.task-item.completed.dark {
+  background-color: #354950;
+}
+
+.task-item.dark .task-title del {
+  color: #aeb8bf;
+}
+
+.task-item.dark .edit-input {
+  color: #f6fdf6;
+  background-color: #46535e;
+  border-color: #66727c;
+}
+
+.task-item.dark .edit-button,
+.task-item.dark .save-button {
+  color: #f6fdf6;
+  background-color: #4d6970;
+}
+
+.task-item.dark .cancel-button {
+  color: #f6fdf6;
+  background-color: #59636b;
+}

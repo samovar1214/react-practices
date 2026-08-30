@@ -72,7 +72,7 @@ export default function AppContent() {
       </button>
 
       <main className="main-content">
-        <section className="task-panel">
+        <section className={`task-panel ${isDark ? "dark" : ""}`}>
           <TaskForm onAdd={handleAdd} />
           <button
             type="button"
