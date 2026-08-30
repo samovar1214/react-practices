@@ -1,6 +1,7 @@
-import { useReducer } from "react";
+import { useReducer, useContext } from "react";
 import TaskForm from "./TaskForm.jsx";
 import TaskList from "./TaskList.jsx";
+import { ThemeContext } from "./ThemeContext.jsx";
 
 function tasksReducer(state, action) {
   switch (action.type) {
@@ -42,6 +43,8 @@ export default function AppContent() {
   const totalTasks = state.tasks.length;
   const completedTasks = state.tasks.filter((task) => task.completed).length;
 
+  const { isDark, setIsDark } = useContext(ThemeContext);
+
   function handleAdd(title) {
     dispatch({ type: "add", title });
   }
@@ -59,10 +62,14 @@ export default function AppContent() {
   }
 
   return (
-    <div className="app">
+    <div className={`app ${isDark ? "dark" : ""}`}>
       <header className="app-header">
         <h1>やること</h1>
       </header>
+
+      <button type="button" onClick={() => setIsDark((isDark) => !isDark)}>
+        {isDark ? "ライトモードに切り替える" : "ダークモードに切り替える"}
+      </button>
 
       <main className="main-content">
         <section className="task-panel">
