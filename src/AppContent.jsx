@@ -12,6 +12,7 @@ function tasksReducer(state, action) {
           ...state.tasks,
           { id: crypto.randomUUID(), title: action.title, completed: false },
         ],
+        future: [],
       };
     case "update":
       return {
@@ -19,17 +20,27 @@ function tasksReducer(state, action) {
         tasks: state.tasks.map((task) =>
           task.id === action.updatedTask.id ? action.updatedTask : task,
         ),
+        future: [],
       };
     case "delete":
       return {
         history: [...state.history, state.tasks],
         tasks: state.tasks.filter((task) => task.id !== action.id),
+        future: [],
       };
     case "undo":
       if (state.history.length === 0) return state;
       return {
         history: state.history.slice(0, -1),
         tasks: state.history[state.history.length - 1],
+        future: [...state.future, state.tasks],
+      };
+    case "redo":
+      if (state.future.length === 0) return state;
+      return {
+        history: [...state.history, state.tasks],
+        tasks: state.future[state.future.length - 1],
+        future: state.future.slice(0, -1),
       };
     default:
       return state;
@@ -37,7 +48,7 @@ function tasksReducer(state, action) {
 }
 
 export default function AppContent() {
-  const initialState = { tasks: [], history: [] };
+  const initialState = { tasks: [], history: [], future: [] };
   const [state, dispatch] = useReducer(tasksReducer, initialState);
 
   const totalTasks = state.tasks.length;
@@ -59,6 +70,10 @@ export default function AppContent() {
 
   function handleUndo() {
     dispatch({ type: "undo" });
+  }
+
+  function handleRedo() {
+    dispatch({ type: "redo" });
   }
 
   return (
@@ -87,6 +102,14 @@ export default function AppContent() {
           >
             元に戻す
           </button>
+          <button
+            type="button"
+            onClick={handleRedo}
+            disabled={state.future.length === 0}
+          >
+            やり直す
+          </button>
+
           {totalTasks === 0 ? (
             <p className="empty-message">やることはまだありません</p>
           ) : (
