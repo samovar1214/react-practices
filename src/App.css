@@ -177,15 +177,6 @@
     transform 0.2s;
 }
 
-.button:hover {
-  filter: brightness(0.95);
-  transform: translateY(-1px);
-}
-
-.button:active {
-  transform: translateY(0);
-}
-
 .button:focus-visible {
   outline: 3px solid rgba(115, 189, 197, 0.45);
   outline-offset: 2px;
@@ -346,4 +337,25 @@
 .app.dark .theme-toggle-button {
   color: #f6fdf6;
   background-color: #3d4852;
+}
+
+.history-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.button:not(:disabled):hover {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}
+
+.button:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
 }

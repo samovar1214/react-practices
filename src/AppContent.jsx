@@ -95,21 +95,24 @@ export default function AppContent() {
       <main className="main-content">
         <section className={`task-panel ${isDark ? "dark" : ""}`}>
           <TaskForm onAdd={handleAdd} />
-          <button
-            type="button"
-            onClick={handleUndo}
-            disabled={state.history.length === 0}
-          >
-            元に戻す
-          </button>
-          <button
-            type="button"
-            onClick={handleRedo}
-            disabled={state.future.length === 0}
-          >
-            やり直す
-          </button>
-
+          <div className="history-buttons">
+            <button
+              className="button cancel-button"
+              type="button"
+              onClick={handleUndo}
+              disabled={state.history.length === 0}
+            >
+              元に戻す
+            </button>
+            <button
+              className="button cancel-button"
+              type="button"
+              onClick={handleRedo}
+              disabled={state.future.length === 0}
+            >
+              やり直す
+            </button>
+          </div>
           {totalTasks === 0 ? (
             <p className="empty-message">やることはまだありません</p>
           ) : (
