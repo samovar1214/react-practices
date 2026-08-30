@@ -55,6 +55,10 @@ export default function App() {
     dispatch({ type: "delete", id });
   }
 
+  function handleUndo() {
+    dispatch({ type: "undo" });
+  }
+
   return (
     <div className="app">
       <header className="app-header">
@@ -64,7 +68,13 @@ export default function App() {
       <main className="main-content">
         <section className="task-panel">
           <TaskForm onAdd={handleAdd} />
-
+          <button
+            type="button"
+            onClick={handleUndo}
+            disabled={state.history.length === 0}
+          >
+            元に戻す
+          </button>
           {totalTasks === 0 ? (
             <p className="empty-message">やることはまだありません</p>
           ) : (
