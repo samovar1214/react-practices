@@ -325,3 +325,25 @@
   color: #f6fdf6;
   background-color: #59636b;
 }
+
+.theme-toggle-area {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.theme-toggle-button {
+  min-width: 190px;
+  height: 40px;
+  padding: 0 18px;
+  font-size: 14px;
+  background-color: #f6fdf6;
+  border-radius: 20px;
+}
+
+.app.dark .theme-toggle-button {
+  color: #f6fdf6;
+  background-color: #3d4852;
+}

@@ -67,9 +67,15 @@ export default function AppContent() {
         <h1>やること</h1>
       </header>
 
-      <button type="button" onClick={() => setIsDark((isDark) => !isDark)}>
-        {isDark ? "ライトモードに切り替える" : "ダークモードに切り替える"}
-      </button>
+      <div className="theme-toggle-area">
+        <button
+          className="button theme-toggle-button"
+          type="button"
+          onClick={() => setIsDark((isDark) => !isDark)}
+        >
+          {isDark ? "ライトモードに切り替える" : "ダークモードに切り替える"}
+        </button>
+      </div>
 
       <main className="main-content">
         <section className={`task-panel ${isDark ? "dark" : ""}`}>
