@@ -3,17 +3,23 @@ import TaskForm from "./TaskForm.jsx";
 import TaskList from "./TaskList.jsx";
 import { ThemeContext } from "./ThemeContext.jsx";
 
+const HISTORY_LIMIT = 20;
+
+function addToHistory(history, tasks) {
+  return [...history, tasks].slice(-HISTORY_LIMIT);
+}
+
 function tasksReducer(state, action) {
   switch (action.type) {
     case "add":
       return {
-        history: [...state.history, state.tasks],
+        history: addToHistory(state.history, state.tasks),
         tasks: [...state.tasks, action.task],
         future: [],
       };
     case "update":
       return {
-        history: [...state.history, state.tasks],
+        history: addToHistory(state.history, state.tasks),
         tasks: state.tasks.map((task) =>
           task.id === action.updatedTask.id ? action.updatedTask : task,
         ),
@@ -21,7 +27,7 @@ function tasksReducer(state, action) {
       };
     case "delete":
       return {
-        history: [...state.history, state.tasks],
+        history: addToHistory(state.history, state.tasks),
         tasks: state.tasks.filter((task) => task.id !== action.id),
         future: [],
       };
@@ -35,7 +41,7 @@ function tasksReducer(state, action) {
     case "redo":
       if (state.future.length === 0) return state;
       return {
-        history: [...state.history, state.tasks],
+        history: addToHistory(state.history, state.tasks),
         tasks: state.future[state.future.length - 1],
         future: state.future.slice(0, -1),
       };
