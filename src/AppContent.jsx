@@ -8,10 +8,7 @@ function tasksReducer(state, action) {
     case "add":
       return {
         history: [...state.history, state.tasks],
-        tasks: [
-          ...state.tasks,
-          { id: crypto.randomUUID(), title: action.title, completed: false },
-        ],
+        tasks: [...state.tasks, action.task],
         future: [],
       };
     case "update":
@@ -57,7 +54,10 @@ export default function AppContent() {
   const { isDark, setIsDark } = useContext(ThemeContext);
 
   function handleAdd(title) {
-    dispatch({ type: "add", title });
+    dispatch({
+      type: "add",
+      task: { id: crypto.randomUUID(), title, completed: false },
+    });
   }
 
   function handleUpdate(updatedTask) {
