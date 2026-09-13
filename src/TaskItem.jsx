@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { ThemeContext } from "./ThemeContext.jsx";
 
 export default function TaskItem({ task, onUpdate, onDelete }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
+  const { isDark } = useContext(ThemeContext);
 
   function handleSave(e) {
     e.preventDefault();
@@ -16,7 +18,9 @@ export default function TaskItem({ task, onUpdate, onDelete }) {
   }
 
   return (
-    <li className={`task-item ${task.completed ? "completed" : ""}`}>
+    <li
+      className={`task-item ${task.completed ? "completed" : ""} ${isDark ? "dark" : ""}`}
+    >
       <input
         className="task-checkbox"
         type="checkbox"

@@ -177,15 +177,6 @@
     transform 0.2s;
 }
 
-.button:hover {
-  filter: brightness(0.95);
-  transform: translateY(-1px);
-}
-
-.button:active {
-  transform: translateY(0);
-}
-
 .button:focus-visible {
   outline: 3px solid rgba(115, 189, 197, 0.45);
   outline-offset: 2px;
@@ -254,4 +245,117 @@
   .edit-form .button-group {
     justify-content: flex-end;
   }
+}
+
+.app.dark {
+  background-color: #1f2933;
+  color: #f6fdf6;
+}
+
+.task-panel.dark {
+  background-color: #2f3b45;
+  color: #f6fdf6;
+}
+
+.task-panel.dark .cancel-button {
+  color: #f6fdf6;
+  background-color: #59636b;
+}
+
+.task-panel.dark .task-count {
+  color: #c7d0d6;
+}
+
+.task-panel.dark .empty-message {
+  color: #d8e0e5;
+  background-color: #3d4852;
+}
+
+.task-form.dark .task-input {
+  color: #f6fdf6;
+  background-color: #3d4852;
+  border-color: #66727c;
+}
+
+.task-form.dark .task-input::placeholder {
+  color: #b7c0c7;
+}
+
+.task-form.dark .add-button {
+  color: #f6fdf6;
+  background-color: #4d6970;
+}
+
+.task-item.dark {
+  color: #f6fdf6;
+  background-color: #3d4852;
+  border-color: #56636d;
+}
+
+.task-item.completed.dark {
+  background-color: #354950;
+}
+
+.task-item.dark .task-title del {
+  color: #aeb8bf;
+}
+
+.task-item.dark .edit-input {
+  color: #f6fdf6;
+  background-color: #46535e;
+  border-color: #66727c;
+}
+
+.task-item.dark .edit-button,
+.task-item.dark .save-button {
+  color: #f6fdf6;
+  background-color: #4d6970;
+}
+
+.task-item.dark .cancel-button {
+  color: #f6fdf6;
+  background-color: #59636b;
+}
+
+.theme-toggle-area {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.theme-toggle-button {
+  min-width: 190px;
+  height: 40px;
+  padding: 0 18px;
+  font-size: 14px;
+  background-color: #f6fdf6;
+  border-radius: 20px;
+}
+
+.app.dark .theme-toggle-button {
+  color: #f6fdf6;
+  background-color: #3d4852;
+}
+
+.history-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.button:not(:disabled):hover {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}
+
+.button:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
 }

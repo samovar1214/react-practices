@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { ThemeContext } from "./ThemeContext.jsx";
 
 export default function TaskForm({ onAdd }) {
   const [title, setTitle] = useState("");
+  const { isDark } = useContext(ThemeContext);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -14,7 +16,10 @@ export default function TaskForm({ onAdd }) {
   }
 
   return (
-    <form className="task-form" onSubmit={handleSubmit}>
+    <form
+      className={`task-form ${isDark ? "dark" : ""}`}
+      onSubmit={handleSubmit}
+    >
       <input
         className="task-input"
         type="text"
