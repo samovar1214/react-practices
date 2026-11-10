@@ -2,6 +2,7 @@ import { useReducer, useContext } from "react";
 import TaskForm from "./TaskForm.jsx";
 import TaskList from "./TaskList.jsx";
 import { ThemeContext } from "./ThemeContext.jsx";
+import useLocalStorage from "./hooks/useLocalStorage.js";
 
 const HISTORY_LIMIT = 20;
 
@@ -51,8 +52,16 @@ function tasksReducer(state, action) {
 }
 
 export default function AppContent() {
-  const initialState = { tasks: [], history: [], future: [] };
-  const [state, dispatch] = useReducer(tasksReducer, initialState);
+  const [state, dispatch] = useReducer(tasksReducer, undefined, () => {
+    const saved = localStorage.getItem("tasks");
+    return {
+      tasks: saved !== null ? JSON.parse(saved) : [],
+      history: [],
+      future: [],
+    };
+  });
+
+  useLocalStorage("tasks", state.tasks);
 
   const totalTasks = state.tasks.length;
   const completedTasks = state.tasks.filter((task) => task.completed).length;
