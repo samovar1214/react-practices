@@ -1,7 +1,8 @@
-import { useReducer, useContext } from "react";
+import { useReducer, useContext, useEffect } from "react";
 import TaskForm from "./TaskForm.jsx";
 import TaskList from "./TaskList.jsx";
 import { ThemeContext } from "./ThemeContext.jsx";
+import useLocalStorage from "./hooks/useLocalStorage.js";
 
 const HISTORY_LIMIT = 20;
 
@@ -45,14 +46,38 @@ function tasksReducer(state, action) {
         tasks: state.future[state.future.length - 1],
         future: state.future.slice(0, -1),
       };
+    case "sync":
+      return {
+        tasks: action.tasks,
+        history: [],
+        future: [],
+      };
     default:
       return state;
   }
 }
 
 export default function AppContent() {
-  const initialState = { tasks: [], history: [], future: [] };
-  const [state, dispatch] = useReducer(tasksReducer, initialState);
+  const [state, dispatch] = useReducer(tasksReducer, undefined, () => {
+    const saved = localStorage.getItem("tasks");
+    return {
+      tasks: saved !== null ? JSON.parse(saved) : [],
+      history: [],
+      future: [],
+    };
+  });
+
+  useLocalStorage("tasks", state.tasks);
+
+  useEffect(() => {
+    function handleStorage(event) {
+      if (event.key === "tasks" && event.newValue) {
+        dispatch({ type: "sync", tasks: JSON.parse(event.newValue) });
+      }
+    }
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
   const totalTasks = state.tasks.length;
   const completedTasks = state.tasks.filter((task) => task.completed).length;
