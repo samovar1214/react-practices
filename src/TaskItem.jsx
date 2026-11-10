@@ -64,7 +64,10 @@ export default function TaskItem({ task, onUpdate, onDelete }) {
             <button
               className="button edit-button"
               type="button"
-              onClick={() => setIsEditing(true)}
+              onClick={() => {
+                setEditTitle(task.title);
+                setIsEditing(true);
+              }}
             >
               編集
             </button>
