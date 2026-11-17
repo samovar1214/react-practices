@@ -1,4 +1,4 @@
-import { useReducer, useContext, useEffect } from "react";
+import { useContext } from "react";
 import TaskForm from "./TaskForm.jsx";
 import TaskList from "./TaskList.jsx";
 import { ThemeContext } from "./ThemeContext.jsx";
@@ -58,26 +58,7 @@ function tasksReducer(state, action) {
 }
 
 export default function AppContent() {
-  const [state, dispatch] = useReducer(tasksReducer, undefined, () => {
-    const saved = localStorage.getItem("tasks");
-    return {
-      tasks: saved !== null ? JSON.parse(saved) : [],
-      history: [],
-      future: [],
-    };
-  });
-
-  useLocalStorage("tasks", state.tasks);
-
-  useEffect(() => {
-    function handleStorage(event) {
-      if (event.key === "tasks" && event.newValue) {
-        dispatch({ type: "sync", tasks: JSON.parse(event.newValue) });
-      }
-    }
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
+  const [state, dispatch] = useLocalStorage("tasks", tasksReducer);
 
   const totalTasks = state.tasks.length;
   const completedTasks = state.tasks.filter((task) => task.completed).length;
